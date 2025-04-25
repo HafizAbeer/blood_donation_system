@@ -2,9 +2,9 @@
   "name": "blood-donation-system-server",
   "version": "1.0.0",
   "description": "Blood Donation Management System Server",
-  "main": "dist/index.js",
+  "main": "dist/index.ts",
   "scripts": {
-    "start": "node dist/index.js",
+    "start": "node dist/index.ts",
     "dev": "nodemon --watch *.ts --exec \"node\" --no-deprecation -r \"ts-node/register\" index.ts",
     "build": "tsc",
     "watch": "tsc -w"
