@@ -38,9 +38,9 @@ mongoose.connect(config.mongoUri, {
   .then(() => {
     console.log('Connected to MongoDB');
     // Start server only after MongoDB connection is established
-    // app.listen(config.port, () => {
-    //   console.log(`Server running on port ${config.port}`);
-    // });
+    app.listen(config.port, () => {
+      console.log(`Server running on port ${config.port}`);
+    });
 
 
   })
