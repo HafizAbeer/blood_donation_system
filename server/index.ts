@@ -30,9 +30,9 @@ mongoose.connect(config.mongoUri, {
 })
   .then(() => {
     console.log('Connected to MongoDB');
-    app.listen(config.port, () => {
-      console.log(`Server running on port ${config.port}`);
-    });
+    // app.listen(config.port, () => {
+    //   console.log(`Server running on port ${config.port}`);
+    // });
 
 
   })
@@ -239,3 +239,5 @@ app.put('/api/donors/:id', async (req, res) => {
     res.status(500).json({ message: 'Error updating donor' });
   }
 }); 
+
+export default app
