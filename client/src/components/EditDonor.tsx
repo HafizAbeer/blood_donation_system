@@ -22,7 +22,7 @@ const EditDonor: React.FC = () => {
     const fetchDonor = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(`/api/donors/${id}`, {
+        const response = await axios.get(`https://riphah-blood-donation-system-server.vercel.app/api/donors/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const donorData = {

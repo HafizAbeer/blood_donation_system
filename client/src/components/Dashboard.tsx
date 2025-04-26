@@ -61,7 +61,7 @@ const Dashboard: React.FC = () => {
   const fetchDonors = useCallback(async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('/api/donors', {
+      const response = await axios.get('https://riphah-blood-donation-system-server.vercel.app/api/donors', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setDonors(response.data);

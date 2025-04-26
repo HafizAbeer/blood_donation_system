@@ -11,7 +11,7 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/auth/login', { username, password });
+      const response = await axios.post('https://riphah-blood-donation-system-server.vercel.app/api/auth/login', { username, password });
       localStorage.setItem('token', response.data.token);
       navigate('/dashboard');
     } catch (err) {
