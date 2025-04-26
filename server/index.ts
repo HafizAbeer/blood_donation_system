@@ -2,18 +2,15 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import jwt from 'jsonwebtoken';
-// import bcrypt from 'bcryptjs';
 import { config } from './config';
 import { Donor } from './models/Donor';
 
-// Extend Express Request type to include user
 declare module 'express' {
   interface Request {
     user?: any;
   }
 }
 
-// Add this interface at the top of the file, after the imports
 interface MongoError extends Error {
   code?: number;
   errors?: Record<string, any>;
@@ -21,21 +18,18 @@ interface MongoError extends Error {
 
 const app = express();
 
-
-// Middleware
 app.use(cors());
 app.use(express.json());
 
 
 // Connect to MongoDB
 mongoose.connect(config.mongoUri, {
-  serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
-  socketTimeoutMS: 45000, // Close sockets after 45s of inactivity
-  family: 4 // Use IPv4, skip trying IPv6
+  serverSelectionTimeoutMS: 5000, 
+  socketTimeoutMS: 45000, 
+  family: 4 
 })
   .then(() => {
     console.log('Connected to MongoDB');
-    // Start server only after MongoDB connection is established
     app.listen(config.port, () => {
       console.log(`Server running on port ${config.port}`);
     });
