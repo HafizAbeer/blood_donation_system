@@ -239,3 +239,20 @@ app.put('/api/donors/:id', async (req, res) => {
     res.status(500).json({ message: 'Error updating donor' });
   }
 }); 
+
+
+// {
+//   "version": 2,
+//   "builds": [
+//     {
+//       "src": "index.ts",
+//       "use": "@vercel/node"
+//     }
+//   ],
+//   "routes": [
+//     {
+//       "src": "/(.*)",
+//       "dest": "index.ts"
+//     }
+//   ]
+// }
