@@ -116,7 +116,7 @@ const AddDonor: React.FC = () => {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:5000/api/donors', formData, {
+      await axios.post('https://riphah-blood-donation-system-server.vercel.app/api/donors', formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'
