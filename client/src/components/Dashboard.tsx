@@ -585,7 +585,7 @@ const Dashboard: React.FC = () => {
                   onClick={async () => {
                     try {
                       const token = localStorage.getItem('token');
-                      await axios.delete(`/api/donors/${donor._id}`, {
+                      await axios.delete(`https://riphah-blood-donation-system-server.vercel.app/api/donors/${donor._id}`, {
                         headers: { Authorization: `Bearer ${token}` }
                       });
                       fetchDonors();
