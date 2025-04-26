@@ -56,7 +56,7 @@ const EditDonor: React.FC = () => {
         ...formData,
         lastDonation: formData.lastDonation ? new Date(formData.lastDonation).toISOString() : null,
       };
-      await axios.put(`/api/donors/${id}`, dataToSend, {
+      await axios.put(`https://riphah-blood-donation-system-server.vercel.app/api/donors/${id}`, dataToSend, {
         headers: { Authorization: `Bearer ${token}` },
       });
       navigate('/dashboard');
