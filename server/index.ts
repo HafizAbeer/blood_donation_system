@@ -3,7 +3,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
+// import bcrypt from 'bcryptjs';
 import { config } from './config';
 import { Donor } from './models/Donor';
 import { createServer, IncomingMessage, ServerResponse } from 'http';
@@ -23,11 +23,12 @@ interface MongoError extends Error {
 
 const app = express();
 
-// const server = createServer(app);
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+const server = createServer(app);
 
 // Connect to MongoDB
 mongoose.connect(config.mongoUri, {
@@ -38,9 +39,9 @@ mongoose.connect(config.mongoUri, {
   .then(() => {
     console.log('Connected to MongoDB');
     // Start server only after MongoDB connection is established
-    app.listen(config.port, () => {
-      console.log(`Server running on port ${config.port}`);
-    });
+    // app.listen(config.port, () => {
+    //   console.log(`Server running on port ${config.port}`);
+    // });
 
 
   })
@@ -48,6 +49,11 @@ mongoose.connect(config.mongoUri, {
     console.error('MongoDB connection error:', err);
     process.exit(1);
   });
+
+  // Export handler for Vercel
+export default (req: VercelRequest, res: VercelResponse) => {
+  server.emit('request', req as unknown as IncomingMessage, res as unknown as ServerResponse);
+};
 
 // Authentication middleware
 const authenticateToken = (req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -245,8 +251,3 @@ app.put('/api/donors/:id', async (req, res) => {
     res.status(500).json({ message: 'Error updating donor' });
   }
 }); 
-
-// Export handler for Vercel
-export default (req: VercelRequest, res: VercelResponse) => {
-  app(req, res); // Calls the Express app as the handler
-};
