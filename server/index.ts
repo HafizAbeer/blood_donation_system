@@ -139,15 +139,15 @@ app.post('/api/donors', authenticateToken, async (req, res) => {
     }
 
     // Check if contact number is already registered
-    const existingDonorByContact = await Donor.findOne({ contactNumber: req.body.contactNumber });
-    if (existingDonorByContact) {
-      return res.status(400).json({
-        message: 'Contact number already registered',
-        validationErrors: {
-          contactNumber: 'This contact number is already registered'
-        }
-      });
-    }
+    // const existingDonorByContact = await Donor.findOne({ contactNumber: req.body.contactNumber });
+    // if (existingDonorByContact) {
+    //   return res.status(400).json({
+    //     message: 'Contact number already registered',
+    //     validationErrors: {
+    //       contactNumber: 'This contact number is already registered'
+    //     }
+    //   });
+    // }
 
     // Format the data before creating the donor
     const donorData = {

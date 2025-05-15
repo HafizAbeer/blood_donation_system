@@ -8,6 +8,7 @@ const donorSchema = new mongoose.Schema({
   contactNumber: {
     type: String,
     required: true,
+    unique: true,
   },
   address: {
     type: String,
