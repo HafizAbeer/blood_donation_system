@@ -7,9 +7,7 @@ const EditDonor: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [formData, setFormData] = useState({
     name: '',
-    fatherName: '',
     contactNumber: '', 
-    cnicNumber: '',
     address: '',
     city: '',
     bloodGroup: '',
@@ -86,21 +84,6 @@ const EditDonor: React.FC = () => {
           </div>
 
           <div>
-            <label htmlFor="fatherName" className="block text-sm font-medium text-gray-700">
-              Father's Name
-            </label>
-            <input
-              type="text"
-              id="fatherName"
-              name="fatherName"
-              required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              value={formData.fatherName}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div>
             <label htmlFor="contactNumber" className="block text-sm font-medium text-gray-700">
               Contact Number
             </label>
@@ -111,21 +94,6 @@ const EditDonor: React.FC = () => {
               required
               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
               value={formData.contactNumber}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div>
-            <label htmlFor="cnicNumber" className="block text-sm font-medium text-gray-700">
-              CNIC Number
-            </label>
-            <input
-              type="text"
-              id="cnicNumber"
-              name="cnicNumber"
-              required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              value={formData.cnicNumber}
               onChange={handleChange}
             />
           </div>

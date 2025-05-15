@@ -1,9 +1,7 @@
 export interface Donor {
   _id?: string;
   name: string;
-  fatherName: string;
   contactNumber: string;
-  cnicNumber: string;
   address: string;
   city: string;
   bloodGroup: string;

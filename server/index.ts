@@ -30,18 +30,11 @@ mongoose.connect(config.mongoUri, {
 })
   .then(() => {
     console.log('Connected to MongoDB');
-    // app.listen(config.port, () => {
-    //   console.log(`Server running on port ${config.port}`);
-    // });
-
-
   })
   .catch((err) => {
     console.error('MongoDB connection error:', err);
     process.exit(1);
   });
-
-
 
 // Authentication middleware
 const authenticateToken = (req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -98,7 +91,7 @@ app.get('/api/donors/:id', authenticateToken, async (req, res) => {
 app.post('/api/donors', authenticateToken, async (req, res) => {
   try {
     // Validate required fields
-    const requiredFields = ['name', 'fatherName', 'contactNumber', 'cnicNumber', 'address', 'city', 'bloodGroup', 'department', 'semester'];
+    const requiredFields = ['name', 'contactNumber', 'address', 'city', 'bloodGroup', 'department', 'semester'];
     const missingFields = requiredFields.filter(field => !req.body[field]);
     
     if (missingFields.length > 0) {
@@ -156,17 +149,6 @@ app.post('/api/donors', authenticateToken, async (req, res) => {
       });
     }
 
-    // Check if CNIC is already registered
-    const existingDonorByCNIC = await Donor.findOne({ cnicNumber: req.body.cnicNumber });
-    if (existingDonorByCNIC) {
-      return res.status(400).json({
-        message: 'CNIC number already registered',
-        validationErrors: {
-          cnicNumber: 'This CNIC number is already registered'
-        }
-      });
-    }
-
     // Format the data before creating the donor
     const donorData = {
       ...req.body,
@@ -188,7 +170,6 @@ app.post('/api/donors', authenticateToken, async (req, res) => {
         message: 'Duplicate entry found',
         validationErrors: {
           contactNumber: 'This contact number is already registered',
-          cnicNumber: 'This CNIC number is already registered'
         }
       });
     }

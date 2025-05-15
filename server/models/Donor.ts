@@ -5,18 +5,9 @@ const donorSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  fatherName: {
-    type: String,
-    required: true,
-  },
   contactNumber: {
     type: String,
     required: true,
-  },
-  cnicNumber: {
-    type: String,
-    required: true,
-    unique: true,
   },
   address: {
     type: String,

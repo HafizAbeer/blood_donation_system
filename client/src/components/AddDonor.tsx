@@ -8,9 +8,7 @@ const AddDonor: React.FC = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
-    fatherName: '',
     contactNumber: '', 
-    cnicNumber: '',
     address: '',
     city: '',
     bloodGroup: '',
@@ -19,20 +17,6 @@ const AddDonor: React.FC = () => {
     lastDonation: '',
     nextAvailableDate: '',
   });
-
-  const formatCNIC = (value: string): string => {
-    // Remove all non-digit characters
-    const numbers = value.replace(/\D/g, '');
-    
-    // Format as XXXXX-XXXXXXX-X
-    if (numbers.length <= 5) {
-      return numbers;
-    } else if (numbers.length <= 12) {
-      return `${numbers.slice(0, 5)}-${numbers.slice(5)}`;
-    } else {
-      return `${numbers.slice(0, 5)}-${numbers.slice(5, 12)}-${numbers.slice(12, 13)}`;
-    }
-  };
 
   const formatContactNumber = (value: string): string => {
     // Remove all non-digit characters
@@ -49,16 +33,8 @@ const AddDonor: React.FC = () => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     
-    // Special handling for CNIC number
-    if (name === 'cnicNumber') {
-      const formattedValue = formatCNIC(value);
-      setFormData({
-        ...formData,
-        [name]: formattedValue
-      });
-    }
     // Special handling for contact number
-    else if (name === 'contactNumber') {
+    if (name === 'contactNumber') {
       const formattedValue = formatContactNumber(value);
       setFormData({
         ...formData,
@@ -87,13 +63,6 @@ const AddDonor: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Validate CNIC format
-    const cnicRegex = /^\d{5}-\d{7}-\d{1}$/;
-    if (!cnicRegex.test(formData.cnicNumber)) {
-      toast.error('CNIC must be in the format XXXXX-XXXXXXX-X');
-      return;
-    }
 
     // Validate contact number format
     const contactRegex = /^03\d{2}-\d{7}$/;
@@ -174,21 +143,6 @@ const AddDonor: React.FC = () => {
           </div>
 
           <div>
-            <label htmlFor="fatherName" className="block text-sm font-medium text-gray-700">
-              Father's Name
-            </label>
-            <input
-              type="text"
-              id="fatherName"
-              name="fatherName"
-              required
-              className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              value={formData.fatherName}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div>
             <label htmlFor="contactNumber" className="block text-sm font-medium text-gray-700">
               Contact Number
             </label>
@@ -204,25 +158,6 @@ const AddDonor: React.FC = () => {
             />
             <p className="mt-1 text-sm text-gray-500">
               Format: 03XX-XXXXXXX (e.g., 0312-3456789)
-            </p>
-          </div>
-
-          <div>
-            <label htmlFor="cnicNumber" className="block text-sm font-medium text-gray-700">
-              CNIC Number
-            </label>
-            <input
-              type="text"
-              id="cnicNumber"
-              name="cnicNumber"
-              value={formData.cnicNumber}
-              onChange={handleChange}
-              placeholder="XXXXX-XXXXXXX-X"
-              className="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500"
-              required
-            />
-            <p className="mt-1 text-sm text-gray-500">
-              Format: XXXXX-XXXXXXX-X (e.g., 12345-1234567-1)
             </p>
           </div>
 

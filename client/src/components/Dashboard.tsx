@@ -7,9 +7,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 interface Donor {
   _id: string;
   name: string;
-  fatherName: string;
   contactNumber: string;
-  cnicNumber: string;
   address: string;
   city: string;
   bloodGroup: string;
@@ -98,9 +96,7 @@ const Dashboard: React.FC = () => {
   const prepareExportData = useCallback(() => {
     const data = filteredDonors.map(donor => ({
       Name: donor.name,
-      'Father\'s Name': donor.fatherName,
       'Contact Number': donor.contactNumber,
-      'CNIC Number': donor.cnicNumber,
       Address: donor.address,
       City: donor.city,
       'Blood Group': donor.bloodGroup,
@@ -478,7 +474,6 @@ const Dashboard: React.FC = () => {
                 <option value="bloodGroup">Blood Group</option>
                 <option value="department">Department</option>
                 <option value="contactNumber">Contact Number</option>
-                <option value="cnicNumber">CNIC Number</option>
               </select>
             </div>
             <div className="w-full sm:w-48">
@@ -533,13 +528,7 @@ const Dashboard: React.FC = () => {
                   </span>
                 </p>
                 <p className="text-gray-600">
-                  <span className="font-medium">Father's Name:</span> {donor.fatherName}
-                </p>
-                <p className="text-gray-600">
                   <span className="font-medium">Contact:</span> {donor.contactNumber}
-                </p>
-                <p className="text-gray-600">
-                  <span className="font-medium">CNIC:</span> {donor.cnicNumber}
                 </p>
                 <p className="text-gray-600">
                   <span className="font-medium">Address:</span> {donor.address}
