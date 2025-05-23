@@ -433,7 +433,7 @@ const Dashboard: React.FC = () => {
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Bar dataKey="value" fill="#8884d8" />
+                    <Bar dataKey="value" fill="#333333" />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
