@@ -63,7 +63,6 @@ const Dashboard: React.FC = () => {
       const response = await axios.get(`${API_BASE_URL}/api/donors`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      console.log('API Response:', response.data);
       if (Array.isArray(response.data)) {
         setDonors(response.data);
         setFilteredDonors(response.data);
