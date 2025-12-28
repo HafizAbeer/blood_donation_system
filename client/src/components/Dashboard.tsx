@@ -59,12 +59,25 @@ const Dashboard: React.FC = () => {
   const fetchDonors = useCallback(async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('https://riphah-blood-donation-system-server.vercel.app/api/donors', {
+      const response = await axios.get('/api/donors', {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setDonors(response.data);
-      setFilteredDonors(response.data);
-      calculateStats(response.data);
+      console.log('API Response:', response.data);
+      if (Array.isArray(response.data)) {
+        setDonors(response.data);
+        setFilteredDonors(response.data);
+        calculateStats(response.data);
+      } else {
+        console.error('Expected array of donors but got:', response.data);
+        setDonors([]);
+        setFilteredDonors([]);
+        setStats({
+          totalDonors: 0,
+          bloodGroupCount: {},
+          cityCount: {},
+          recentDonations: 0
+        });
+      }
       setLoading(false);
     } catch (error) {
       console.error('Error fetching donors:', error);
@@ -81,12 +94,12 @@ const Dashboard: React.FC = () => {
     const filtered = donors.filter(donor => {
       const searchTermLower = searchTerm.toLowerCase();
       const filterValue = donor[filterBy as keyof typeof donor]?.toString().toLowerCase() || '';
-      
+
       // Special handling for city search
       if (filterBy === 'city') {
         return filterValue.includes(searchTermLower);
       }
-      
+
       return filterValue.includes(searchTermLower);
     });
 
@@ -121,14 +134,14 @@ const Dashboard: React.FC = () => {
   }, [prepareExportData]);
 
   const calculateStats = (donors: Donor[]) => {
-    const bloodGroupCount: Record<string, number> = {}; 
+    const bloodGroupCount: Record<string, number> = {};
     const cityCount: Record<string, number> = {};
     let recentDonations = 0;
 
     donors.forEach(donor => {
       bloodGroupCount[donor.bloodGroup] = (bloodGroupCount[donor.bloodGroup] || 0) + 1;
       cityCount[donor.city] = (cityCount[donor.city] || 0) + 1;
-      
+
       if (donor.lastDonation) {
         const donationDate = new Date(donor.lastDonation);
         const thirtyDaysAgo = new Date();
@@ -202,9 +215,9 @@ const Dashboard: React.FC = () => {
             <div className="flex justify-between h-16">
               <div className="flex items-center">
                 <div className="flex-shrink-0 flex items-center">
-                  <img 
-                    src="/images/logo.jpg" 
-                    alt="Blood Donation Logo" 
+                  <img
+                    src="/images/logo.jpg"
+                    alt="Blood Donation Logo"
                     className="h-12 w-auto"
                   />
                 </div>
@@ -285,9 +298,9 @@ const Dashboard: React.FC = () => {
           <div className="flex justify-between h-16">
             <div className="flex items-center">
               <div className="flex-shrink-0 flex items-center">
-                <img 
-                  src="/images/logo.jpg" 
-                  alt="Blood Donation Logo" 
+                <img
+                  src="/images/logo.jpg"
+                  alt="Blood Donation Logo"
                   className="h-12 w-auto"
                 />
               </div>
@@ -418,13 +431,13 @@ const Dashboard: React.FC = () => {
               <div className="h-80">
                 <h3 className="text-lg font-medium text-gray-700 mb-2">Donors by City</h3>
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart 
+                  <BarChart
                     data={cityData}
                     margin={{ top: 20, right: 30, left: 20, bottom: cityData.length > 5 ? 100 : 60 }}
                   >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis 
-                      dataKey="name" 
+                    <XAxis
+                      dataKey="name"
                       angle={cityData.length > 5 ? -45 : 0}
                       textAnchor={cityData.length > 5 ? "end" : "middle"}
                       height={cityData.length > 5 ? 100 : 60}
@@ -509,21 +522,20 @@ const Dashboard: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {sortedDonors.map((donor) => (
-            <div 
-              key={donor._id} 
+            <div
+              key={donor._id}
               className="bg-white rounded-lg shadow-md p-6 transform hover:scale-105 transition-transform duration-200"
             >
               <h2 className="text-xl font-semibold text-gray-800">{donor.name}</h2>
               <div className="mt-4 space-y-2">
                 <p className="text-gray-600">
-                  <span className="font-medium">Blood Group:</span> 
-                  <span className={`ml-2 px-2 py-1 rounded-full text-sm ${
-                    donor.bloodGroup === 'O+' ? 'bg-red-100 text-red-800' :
-                    donor.bloodGroup === 'A+' ? 'bg-blue-100 text-blue-800' :
-                    donor.bloodGroup === 'B+' ? 'bg-green-100 text-green-800' :
-                    donor.bloodGroup === 'AB+' ? 'bg-purple-100 text-purple-800' :
-                    'bg-gray-100 text-gray-800'
-                  }`}>
+                  <span className="font-medium">Blood Group:</span>
+                  <span className={`ml-2 px-2 py-1 rounded-full text-sm ${donor.bloodGroup === 'O+' ? 'bg-red-100 text-red-800' :
+                      donor.bloodGroup === 'A+' ? 'bg-blue-100 text-blue-800' :
+                        donor.bloodGroup === 'B+' ? 'bg-green-100 text-green-800' :
+                          donor.bloodGroup === 'AB+' ? 'bg-purple-100 text-purple-800' :
+                            'bg-gray-100 text-gray-800'
+                    }`}>
                     {donor.bloodGroup}
                   </span>
                 </p>
@@ -543,22 +555,20 @@ const Dashboard: React.FC = () => {
                   <span className="font-medium">Semester:</span> {donor.semester}
                 </p>
                 <p className="text-gray-600">
-                  <span className="font-medium">Last Donation:</span> 
-                  <span className={`ml-2 ${
-                    donor.lastDonation ? 
-                    new Date(donor.lastDonation) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) ? 
-                    'text-green-600' : 'text-gray-600' : 'text-gray-400'
-                  }`}>
+                  <span className="font-medium">Last Donation:</span>
+                  <span className={`ml-2 ${donor.lastDonation ?
+                      new Date(donor.lastDonation) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) ?
+                        'text-green-600' : 'text-gray-600' : 'text-gray-400'
+                    }`}>
                     {donor.lastDonation ? new Date(donor.lastDonation).toLocaleDateString() : 'Never'}
                   </span>
                 </p>
                 <p className="text-gray-600">
-                  <span className="font-medium">Next Available:</span> 
-                  <span className={`ml-2 ${
-                    donor.nextAvailableDate && 
-                    new Date(donor.nextAvailableDate) <= new Date() ? 
-                    'text-green-600' : 'text-gray-600'
-                  }`}>
+                  <span className="font-medium">Next Available:</span>
+                  <span className={`ml-2 ${donor.nextAvailableDate &&
+                      new Date(donor.nextAvailableDate) <= new Date() ?
+                      'text-green-600' : 'text-gray-600'
+                    }`}>
                     {donor.nextAvailableDate ? new Date(donor.nextAvailableDate).toLocaleDateString() : 'N/A'}
                   </span>
                 </p>
@@ -574,7 +584,7 @@ const Dashboard: React.FC = () => {
                   onClick={async () => {
                     try {
                       const token = localStorage.getItem('token');
-                      await axios.delete(`https://riphah-blood-donation-system-server.vercel.app/api/donors/${donor._id}`, {
+                      await axios.delete(`/api/donors/${donor._id}`, {
                         headers: { Authorization: `Bearer ${token}` }
                       });
                       fetchDonors();

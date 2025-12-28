@@ -8,7 +8,7 @@ const AddDonor: React.FC = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
-    contactNumber: '', 
+    contactNumber: '',
     address: '',
     city: '',
     bloodGroup: '',
@@ -21,7 +21,7 @@ const AddDonor: React.FC = () => {
   const formatContactNumber = (value: string): string => {
     // Remove all non-digit characters
     const numbers = value.replace(/\D/g, '');
-    
+
     // Format as 03XX-XXXXXXX
     if (numbers.length <= 4) {
       return numbers;
@@ -32,7 +32,7 @@ const AddDonor: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    
+
     // Special handling for contact number
     if (name === 'contactNumber') {
       const formattedValue = formatContactNumber(value);
@@ -46,7 +46,7 @@ const AddDonor: React.FC = () => {
       const lastDonationDate = new Date(value);
       const nextAvailableDate = new Date(lastDonationDate);
       nextAvailableDate.setMonth(nextAvailableDate.getMonth() + 3);
-      
+
       setFormData({
         ...formData,
         [name]: value,
@@ -76,7 +76,7 @@ const AddDonor: React.FC = () => {
       const lastDonationDate = new Date(formData.lastDonation);
       const today = new Date();
       today.setHours(0, 0, 0, 0); // Set to start of day for comparison
-      
+
       if (lastDonationDate > today) {
         toast.error('Last donation date cannot be in the future');
         return;
@@ -85,7 +85,7 @@ const AddDonor: React.FC = () => {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.post('https://riphah-blood-donation-system-server.vercel.app/api/donors', formData, {
+      await axios.post('/api/donors', formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'

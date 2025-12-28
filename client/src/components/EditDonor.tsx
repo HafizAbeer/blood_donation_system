@@ -7,7 +7,7 @@ const EditDonor: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [formData, setFormData] = useState({
     name: '',
-    contactNumber: '', 
+    contactNumber: '',
     address: '',
     city: '',
     bloodGroup: '',
@@ -20,12 +20,12 @@ const EditDonor: React.FC = () => {
     const fetchDonor = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(`https://riphah-blood-donation-system-server.vercel.app/api/donors/${id}`, {
+        const response = await axios.get(`/api/donors/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const donorData = {
           ...response.data,
-          lastDonation: response.data.lastDonation 
+          lastDonation: response.data.lastDonation
             ? new Date(response.data.lastDonation).toISOString().split('T')[0]
             : '',
         };
@@ -54,7 +54,7 @@ const EditDonor: React.FC = () => {
         ...formData,
         lastDonation: formData.lastDonation ? new Date(formData.lastDonation).toISOString() : null,
       };
-      await axios.put(`https://riphah-blood-donation-system-server.vercel.app/api/donors/${id}`, dataToSend, {
+      await axios.put(`/api/donors/${id}`, dataToSend, {
         headers: { Authorization: `Bearer ${token}` },
       });
       navigate('/dashboard');
