@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { CSVLink } from 'react-csv';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import API_BASE_URL from '../config';
 
 interface Donor {
   _id: string;
@@ -59,7 +60,7 @@ const Dashboard: React.FC = () => {
   const fetchDonors = useCallback(async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('/api/donors', {
+      const response = await axios.get(`${API_BASE_URL}/api/donors`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       console.log('API Response:', response.data);
@@ -531,10 +532,10 @@ const Dashboard: React.FC = () => {
                 <p className="text-gray-600">
                   <span className="font-medium">Blood Group:</span>
                   <span className={`ml-2 px-2 py-1 rounded-full text-sm ${donor.bloodGroup === 'O+' ? 'bg-red-100 text-red-800' :
-                      donor.bloodGroup === 'A+' ? 'bg-blue-100 text-blue-800' :
-                        donor.bloodGroup === 'B+' ? 'bg-green-100 text-green-800' :
-                          donor.bloodGroup === 'AB+' ? 'bg-purple-100 text-purple-800' :
-                            'bg-gray-100 text-gray-800'
+                    donor.bloodGroup === 'A+' ? 'bg-blue-100 text-blue-800' :
+                      donor.bloodGroup === 'B+' ? 'bg-green-100 text-green-800' :
+                        donor.bloodGroup === 'AB+' ? 'bg-purple-100 text-purple-800' :
+                          'bg-gray-100 text-gray-800'
                     }`}>
                     {donor.bloodGroup}
                   </span>
@@ -557,8 +558,8 @@ const Dashboard: React.FC = () => {
                 <p className="text-gray-600">
                   <span className="font-medium">Last Donation:</span>
                   <span className={`ml-2 ${donor.lastDonation ?
-                      new Date(donor.lastDonation) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) ?
-                        'text-green-600' : 'text-gray-600' : 'text-gray-400'
+                    new Date(donor.lastDonation) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) ?
+                      'text-green-600' : 'text-gray-600' : 'text-gray-400'
                     }`}>
                     {donor.lastDonation ? new Date(donor.lastDonation).toLocaleDateString() : 'Never'}
                   </span>
@@ -566,8 +567,8 @@ const Dashboard: React.FC = () => {
                 <p className="text-gray-600">
                   <span className="font-medium">Next Available:</span>
                   <span className={`ml-2 ${donor.nextAvailableDate &&
-                      new Date(donor.nextAvailableDate) <= new Date() ?
-                      'text-green-600' : 'text-gray-600'
+                    new Date(donor.nextAvailableDate) <= new Date() ?
+                    'text-green-600' : 'text-gray-600'
                     }`}>
                     {donor.nextAvailableDate ? new Date(donor.nextAvailableDate).toLocaleDateString() : 'N/A'}
                   </span>
@@ -584,7 +585,7 @@ const Dashboard: React.FC = () => {
                   onClick={async () => {
                     try {
                       const token = localStorage.getItem('token');
-                      await axios.delete(`/api/donors/${donor._id}`, {
+                      await axios.delete(`${API_BASE_URL}/api/donors/${donor._id}`, {
                         headers: { Authorization: `Bearer ${token}` }
                       });
                       fetchDonors();

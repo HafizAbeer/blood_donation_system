@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+import API_BASE_URL from '../config';
+
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -11,7 +13,7 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/api/auth/login', { username, password });
+      const response = await axios.post(`${API_BASE_URL}/api/auth/login`, { username, password });
       localStorage.setItem('token', response.data.token);
       navigate('/dashboard');
     } catch (err) {

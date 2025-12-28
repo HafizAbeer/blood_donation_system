@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
+import API_BASE_URL from '../config';
 
 const EditDonor: React.FC = () => {
   const navigate = useNavigate();
@@ -20,7 +21,7 @@ const EditDonor: React.FC = () => {
     const fetchDonor = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(`/api/donors/${id}`, {
+        const response = await axios.get(`${API_BASE_URL}/api/donors/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const donorData = {
@@ -54,7 +55,7 @@ const EditDonor: React.FC = () => {
         ...formData,
         lastDonation: formData.lastDonation ? new Date(formData.lastDonation).toISOString() : null,
       };
-      await axios.put(`/api/donors/${id}`, dataToSend, {
+      await axios.put(`${API_BASE_URL}/api/donors/${id}`, dataToSend, {
         headers: { Authorization: `Bearer ${token}` },
       });
       navigate('/dashboard');
